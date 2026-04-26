@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khkixi Edu - Complete Education Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-blue { background: #3b82f6; color: white; }
+        .btn-green { background: #10b981; color: white; }
+        .btn-purple { background: #8b5cf6; color: white; }
+        .btn-orange { background: #f59e0b; color: white; }
+        .btn-red { background: #ef4444; color: white; }
+        .btn-gray { background: #6b7280; color: white; }
+        .btn-pink { background: #ec4899; color: white; }
+        .btn-cyan { background: #06b6d4; color: white; }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .student-item, .fee-item, .exam-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .student-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .student-class {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 100%;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card h3 {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        th {
+            background: #f3f4f6;
+            font-weight: bold;
+        }
+        .warning {
+            background: #fef3c7;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: #92400e;
+        }
+        .success {
+            background: #d1fae5;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: #065f46;
+        }
+        .login-box {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .user-badge {
+            background: #e0e7ff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .status-paid { color: #10b981; font-weight: bold; }
+        .status-pending { color: #ef4444; font-weight: bold; }
+        .status-partial { color: #f59e0b; font-weight: bold; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        @media (max-width: 768px) {
+            .student-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- Login Screen -->
+        <div id="login-screen" style="display: block;">
+            <div class="login-box">
+                <h2>🏫 Khkixi Edu</h2>
+                <h3 style="text-align: center; margin-bottom: 20px;">Complete Education System</h3>
+                
+                <div class="form-group">
+                    <label>Select Role:</label>
+                    <select id="login-role">
+                        <option value="admin">👑 Admin</option>
+                        <option value="teacher">👩‍🏫 Teacher</option>
+                        <option value="parent">👪 Parent</option>
+                        <option value="student">🎓 Student</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="login-username" placeholder="Enter username">
+                </div>
+                
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" id="login-password" placeholder="Enter password">
+                </div>
+                
+                <button class="btn-purple" onclick="login()" style="width: 100%;">🔐 Login</button>
+                
+                <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #6b7280;">
+                    <p><strong>Demo Accounts:</strong></p>
+                    <p>Admin: admin / admin123</p>
+                    <p>Teacher: teacher / teacher123</p>
+                    <p>Parent: parent / parent123</p>
+                    <p>Student: student / student123</p>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <button class="btn-green" onclick="showRegister()" style="width: 100%;">📝 New User? Register Here</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Registration Screen -->
+        <div id="register-screen" style="display: none;">
+            <div class="login-box">
+                <h2>📝 Create New Account</h2>
+                <button onclick="showLogin()" style="margin-bottom: 15px;">← Back to Login</button>
+                
+                <div class="form-group">
+                    <label>Select Role:</label>
+                    <select id="register-role">
+                        <option value="teacher">👩‍🏫 Teacher</option>
+                        <option value="parent">👪 Parent</option>
+                        <option value="student">🎓 Student</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Full Name:</label>
+                    <input type="text" id="register-name" placeholder="Full name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email (for notifications):</label>
+                    <input type="email" id="register-email" placeholder="email@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone:</label>
+                    <input type="tel" id="register-phone" placeholder="Phone number">
+                </div>
+                
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="register-username" placeholder="Choose username">
+                </div>
+                
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" id="register-password" placeholder="Choose password">
+                </div>
+                
+                <div class="form-group" id="parent-child-group" style="display: none;">
+                    <label>Select Your Child:</label>
+                    <select id="register-child-id"></select>
+                </div>
+                
+                <div class="form-group" id="student-class-group" style="display: none;">
+                    <label>Class:</label>
+                    <input type="text" id="register-class" placeholder="e.g., 10">
+                </div>
+                
+                <div class="form-group" id="student-section-group" style="display: none;">
+                    <label>Section:</label>
+                    <input type="text" id="register-section" placeholder="e.g., A">
+                </div>
+                
+                <button class="btn-green" onclick="register()" style="width: 100%;">✅ Register</button>
+            </div>
+        </div>
+        
+        <!-- Main App -->
+        <div id="main-app" style="display: none;">
+            <div class="header">
+                <h1>🏫 Khkixi Edu</h1>
+                <p id="welcome-message"></p>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+
+            <div class="nav-buttons" id="nav-buttons"></div>
+            <div id="dynamic-pages"></div>
+        </div>
+    </div>
+
+    <div id="notification-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2>📧 Send Notification</h2>
+            <div class="form-group">
+                <label>To:</label>
+                <select id="notify-role">
+                    <option value="all">All Users</option>
+                    <option value="parents">Parents Only</option>
+                    <option value="teachers">Teachers Only</option>
+                    <option value="students">Students Only</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Subject:</label>
+                <input type="text" id="notify-subject" placeholder="Notification subject">
+            </div>
+            <div class="form-group">
+                <label>Message:</label>
+                <textarea id="notify-message" rows="4" placeholder="Your message here..."></textarea>
+            </div>
+            <button class="btn-blue" onclick="sendNotification()">Send Notification</button>
+        </div>
+    </div>
+
+    <script>
+        // ============ DATA STORAGE ============
+        let students = [];
+        let attendance = [];
+        let marks = [];
+        let activities = [];
+        let users = [];
+        let fees = [];
+        let exams = [];
+        let timetable = [];
+        let notifications = [];
+        let currentUser = null;
+
+        function loadData() {
+            students = JSON.parse(localStorage.getItem('khkixi_students') || '[]');
+            attendance = JSON.parse(localStorage.getItem('khkixi_attendance') || '[]');
+            marks = JSON.parse(localStorage.getItem('khkixi_marks') || '[]');
+            activities = JSON.parse(localStorage.getItem('khkixi_activities') || '[]');
+            users = JSON.parse(localStorage.getItem('khkixi_users') || '[]');
+            fees = JSON.parse(localStorage.getItem('khkixi_fees') || '[]');
+            exams = JSON.parse(localStorage.getItem('khkixi_exams') || '[]');
+            timetable = JSON.parse(localStorage.getItem('khkixi_timetable') || '[]');
+            notifications = JSON.parse(localStorage.getItem('khkixi_notifications') || '[]');
+            
+            if (users.length === 0) {
+                users = [
+                    { id: 1, name: 'Admin User', username: 'admin', password: 'admin123', role: 'admin', email: 'admin@khkixi.com', phone: '9999999999' },
+                    { id: 2, name: 'Teacher', username: 'teacher', password: 'teacher123', role: 'teacher', email: 'teacher@khkixi.com', phone: '8888888888' },
+                    { id: 3, name: 'Parent', username: 'parent', password: 'parent123', role: 'parent', childId: 1, email: 'parent@example.com', phone: '7777777777' },
+                    { id: 4, name: 'Rahul Sharma', username: 'student', password: 'student123', role: 'student', studentId: 1, email: 'rahul@example.com', phone: '6666666666' },
+                ];
+                saveUsers();
+            }
+            
+            if (students.length === 0) {
+                students = [
+                    { id: 1, name: 'Rahul Sharma', class: '10', section: 'A', parentEmail: 'parent@example.com', parentPhone: '7777777777' },
+                    { id: 2, name: 'Priya Patel', class: '10', section: 'A', parentEmail: 'priya.parent@example.com', parentPhone: '7777777778' },
+                    { id: 3, name: 'Amit Kumar', class: '9', section: 'B', parentEmail: 'amit.parent@example.com', parentPhone: '7777777779' },
+                ];
+                saveStudents();
+            }
+            
+            if (fees.length === 0) {
+                fees = [
+                    { id: 1, studentId: 1, total_amount: 5000, paid_amount: 3000, due_date: '2026-05-15', status: 'partial' },
+                    { id: 2, studentId: 2, total_amount: 5000, paid_amount: 5000, due_date: '2026-05-15', status: 'paid' },
+                    { id: 3, studentId: 3, total_amount: 5000, paid_amount: 0, due_date: '2026-05-15', status: 'pending' },
+                ];
+                saveFees();
+            }
+            
+            if (exams.length === 0) {
+                exams = [
+                    { id: 1, name: 'Mid-Term Exams', subject: 'Mathematics', date: '2026-06-15', time: '9:00 AM', class: '10' },
+                    { id: 2, name: 'Mid-Term Exams', subject: 'Science', date: '2026-06-16', time: '9:00 AM', class: '10' },
+                    { id: 3, name: 'Final Exams', subject: 'English', date: '2026-07-20', time: '10:00 AM', class: '9' },
+                ];
+                saveExams();
+            }
+        }
+
+        function saveStudents() { localStorage.setItem('khkixi_students', JSON.stringify(students)); }
+        function saveAttendance() { localStorage.setItem('khkixi_attendance', JSON.stringify(attendance)); }
+        function saveMarks() { localStorage.setItem('khkixi_marks', JSON.stringify(marks)); }
+        function saveActivities() { localStorage.setItem('khkixi_activities', JSON.stringify(activities)); }
+        function saveUsers() { localStorage.setItem('khkixi_users', JSON.stringify(users)); }
+        function saveFees() { localStorage.setItem('khkixi_fees', JSON.stringify(fees)); }
+        function saveExams() { localStorage.setItem('khkixi_exams', JSON.stringify(exams)); }
+        function saveTimetable() { localStorage.setItem('khkixi_timetable', JSON.stringify(timetable)); }
+        function saveNotifications() { localStorage.setItem('khkixi_notifications', JSON.stringify(notifications)); }
+
+        // ============ AUTHENTICATION ============
+        function login() {
+            const role = document.getElementById('login-role').value;
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            const user = users.find(u => u.username === username && u.password === password && u.role === role);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('khkixi_current_user', JSON.stringify(currentUser));
+                showMainApp();
+            } else {
+                alert('Invalid credentials! Use demo accounts below.');
+            }
+        }
+        
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('khkixi_current_user');
+            document.getElementById('main-app').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
+        }
+        
+        function showRegister() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('register-screen').style.display = 'block';
+            loadChildSelect();
+            
+            document.getElementById('register-role').addEventListener('change', function() {
+                const role = this.value;
+                document.getElementById('parent-child-group').style.display = role === 'parent' ? 'block' : 'none';
+                document.getElementById('student-class-group').style.display = role === 'student' ? 'block' : 'none';
+                document.getElementById('student-section-group').style.display = role === 'student' ? 'block' : 'none';
+            });
+        }
+        
+        function showLogin() {
+            document.getElementById('register-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
+        }
+        
+        function loadChildSelect() {
+            const select = document.getElementById('register-child-id');
+            select.innerHTML = '<option value="">Select Child</option>' + 
+                students.map(s => `<option value="${s.id}">${s.name} - Class ${s.class}</option>`).join('');
+        }
+        
+        function register() {
+            const role = document.getElementById('register-role').value;
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const phone = document.getElementById('register-phone').value;
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            
+            if (!name || !username || !password) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            if (users.find(u => u.username === username)) {
+                alert('Username already exists!');
+                return;
+            }
+            
+            const newUser = {
+                id: users.length + 1,
+                name: name,
+                username: username,
+                password: password,
+                role: role,
+                email: email || '',
+                phone: phone || ''
+            };
+            
+            if (role === 'parent') {
+                const childId = document.getElementById('register-child-id').value;
+                if (!childId) {
+                    alert('Please select your child');
+                    return;
+                }
+                newUser.childId = parseInt(childId);
+            }
+            
+            if (role === 'student') {
+                const className = document.getElementById('register-class').value;
+                const section = document.getElementById('register-section').value;
+                if (!className) {
+                    alert('Please enter class');
+                    return;
+                }
+                const newStudent = {
+                    id: students.length + 1,
+                    name: name,
+                    class: className,
+                    section: section || '',
+                    parentEmail: email || '',
+                    parentPhone: phone || ''
+                };
+                students.push(newStudent);
+                saveStudents();
+                newUser.studentId = newStudent.id;
+            }
+            
+            users.push(newUser);
+            saveUsers();
+            
+            alert('Registration successful! Please login.');
+            showLogin();
+        }
+        
+        function showMainApp() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('register-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            
+            document.getElementById('welcome-message').innerHTML = `Welcome, ${currentUser.name} <span class="user-badge">${currentUser.role.toUpperCase()}</span>`;
+            
+            const navDiv = document.getElementById('nav-buttons');
+            let buttons = '';
+            
+            if (currentUser.role === 'admin') {
+                buttons = `
+                    <button class="nav-btn btn-blue" onclick="renderPage('dashboard')">📊 Dashboard</button>
+                    <button class="nav-btn btn-purple" onclick="renderPage('attendance')">📋 Attendance</button>
+                    <button class="nav-btn btn-green" onclick="renderPage('marks')">📝 Marks</button>
+                    <button class="nav-btn btn-cyan" onclick="renderPage('pash')">🏆 PASH Board</button>
+                    <button class="nav-btn btn-orange" onclick="renderPage('extra')">🎯 Activities</button>
+                    <button class="nav-btn btn-gray" onclick="renderPage('students')">👥 Students</button>
+                    <button class="nav-btn btn-pink" onclick="renderPage('fees')">💰 Fees</button>
+                    <button class="nav-btn btn-blue" onclick="renderPage('exams')">📅 Exams</button>
+                    <button class="nav-btn btn-purple" onclick="openNotificationModal()">📧 Notify</button>
+                    <button class="nav-btn btn-red" onclick="renderPage('users')">👥 Users</button>
+                `;
+            } else if (currentUser.role === 'teacher') {
+                buttons = `
+                    <button class="nav-btn btn-blue" onclick="renderPage('dashboard')">📊 Dashboard</button>
+                    <button class="nav-btn btn-purple" onclick="renderPage('attendance')">📋 Attendance</button>
+                    <button class="nav-btn btn-green" onclick="renderPage('marks')">📝 Marks</button>
+                    <button class="nav-btn btn-cyan" onclick="renderPage('pash')">🏆 PASH Board</button>
+                    <button class="nav-btn btn-orange" onclick="renderPage('extra')">🎯 Activities</button>
+                    <button class="nav-btn btn-gray" onclick="renderPage('students')">👥 Students</button>
+                    <button class="nav-btn btn-pink" onclick="renderPage('fees')">💰 Fees</button>
+                    <button class="nav-btn btn-blue" onclick="renderPage('exams')">📅 Exams</button>
+                `;
+            } else {
+                buttons = `
+                    <button class="nav-btn btn-cyan" onclick="renderPage('pash')">🏆 My Performance</button>
+                    <button class="nav-btn btn-orange" onclick="renderPage('extra')">🎯 My Activities</button>
+                    <button class="nav-btn btn-pink" onclick="renderPage('fees-view')">💰 My Fees</button>
+                    <button class="nav-btn btn-blue" onclick="renderPage('exam-view')">📅 Exam Schedule</button>
+                    <button class="nav-btn btn-purple" onclick="renderPage('notifications-view')">📧 Notifications</button>
+                `;
+            }
+            
+            navDiv.innerHTML = buttons;
+            renderPage('dashboard');
+        }
+        
+        function renderPage(page) {
+            const container = document.getElementById('dynamic-pages');
+            
+            if (page === 'dashboard') renderDashboard(container);
+            else if (page === 'attendance') renderAttendance(container);
+            else if (page === 'marks') renderMarks(container);
+            else if (page === 'pash') renderPash(container);
+            else if (page === 'extra') renderExtra(container);
+            else if (page === 'students') renderStudents(container);
+            else if (page === 'users') renderUsers(container);
+            else if (page === 'fees') renderFees(container);
+            else if (page === 'fees-view') renderFeesView(container);
+            else if (page === 'exams') renderExams(container);
+            else if (page === 'exam-view') renderExamView(container);
+            else if (page === 'notifications-view') renderNotificationsView(container);
+        }
+        
+        // ============ DASHBOARD ============
+        function renderDashboard(container) {
+            const totalStudents = students.length;
+            const totalTeachers = users.filter(u => u.role === 'teacher').length;
+            const avgAttendance = attendance.length > 0 ? 
+                (attendance.filter(a => a.status === 'present').length / attendance.length * 100).toFixed(1) : 0;
+            const totalCollected = fees.reduce((sum, f) => sum + f.paid_amount, 0);
+            const totalPending = fees.reduce((sum, f) => sum + (f.total_amount - f.paid_amount), 0);
+            
+            container.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card" onclick="renderPage('students')"><h3>Total Students</h3><div class="number">${totalStudents}</div></div>
+                    <div class="stat-card" onclick="renderPage('users')"><h3>Teachers</h3><div class="number">${totalTeachers}</div></div>
+                    <div class="stat-card"><h3>Avg Attendance</h3><div class="number">${avgAttendance}%</div></div>
+                    <div class="stat-card" onclick="renderPage('fees')"><h3>Fees Collected</h3><div class="number">₹${totalCollected.toLocaleString()}</div></div>
+                    <div class="stat-card" onclick="renderPage('fees')"><h3>Fees Pending</h3><div class="number">₹${totalPending.toLocaleString()}</div></div>
+                </div>
+                <div class="card">
+                    <h3>📊 Quick Actions</h3>
+                    <div class="button-group" style="margin-top: 15px;">
+                        <button class="btn-green" onclick="renderPage('attendance')">Mark Attendance</button>
+                        <button class="btn-blue" onclick="renderPage('marks')">Enter Marks</button>
+                        <button class="btn-orange" onclick="openNotificationModal()">Send Notification</button>
+                        <button class="btn-purple" onclick="exportToExcel()">📎 Export to Excel</button>
+                        <button class="btn-cyan" onclick="window.print()">🖨️ Print Report</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // ============ ATTENDANCE ============
+        function renderAttendance(container) {
+            let filteredStudents = students;
+            if (currentUser.role === 'parent') {
+                filteredStudents = students.filter(s => s.id === currentUser.childId);
+            } else if (currentUser.role === 'student') {
+                filteredStudents = students.filter(s => s.id === currentUser.studentId);
+            }
+            
+            const date = new Date().toISOString().split('T')[0];
+            
+            container.innerHTML = `
+                <div class="card">
+                    <h2>📋 Mark Attendance</h2>
+                    <div class="form-group">
+                        <label>Date:</label>
+                        <input type="date" id="att-date" value="${date}" onchange="renderAttendanceList()">
+                    </div>
+                    <div id="attendance-list-container"></div>
+                </div>
+            `;
+            renderAttendanceList();
+        }
+        
+        function renderAttendanceList() {
+            const date = document.getElementById('att-date')?.value || new Date().toISOString().split('T')[0];
+            let filteredStudents = students;
+            if (currentUser.role === 'parent') {
+                filteredStudents = students.filter(s => s.id === currentUser.childId);
+            } else if (currentUser.role === 'student') {
+                filteredStudents = students.filter(s => s.id === currentUser.studentId);
+            }
+            
+            const container = document.getElementById('attendance-list-container');
+            if (!container) return;
+            
+            container.innerHTML = filteredStudents.map(student => {
+                const existing = attendance.find(a => a.studentId === student.id && a.date === date);
+                const status = existing ? existing.status : '';
+                return `
+                    <div class="student-item">
+                        <div><div class="student-name">${student.name}</div><div>Class ${student.class}-${student.section}</div></div>
+                        <div class="button-group">
+                            <button class="${status === 'present' ? 'btn-green' : 'btn-gray'}" onclick="markAttendance(${student.id}, 'present', '${date}')">✅ Present</button>
+                            <button class="${status === 'absent' ? 'btn-red' : 'btn-gray'}" onclick="markAttendance(${student.id}, 'absent', '${date}')">❌ Absent</button>
+                            <button class="${status === 'late' ? 'btn-orange' : 'btn-gray'}" onclick="markAttendance(${student.id}, 'late', '${date}')">⏰ Late</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function markAttendance(studentId, status, date) {
+            const index = attendance.findIndex(a => a.studentId === studentId && a.date === date);
+            if (index !== -1) {
+                attendance[index].status = status;
+            } else {
+                attendance.push({ studentId, date, status });
+            }
+            saveAttendance();
+            renderAttendanceList();
+            alert(`✓ Marked as ${status}`);
+        }
+        
+        // ============ MARKS ============
+        function renderMarks(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>📝 Enter Marks</h2>
+                    <div class="form-group">
+                        <label>Student:</label>
+                        <select id="marks-student">${students.map(s => `<option value="${s.id}">${s.name} - Class ${s.class}</option>`).join('')}</select>
+                    </div>
+                    <div class="form-group"><label>Subject:</label><input type="text" id="marks-subject" placeholder="Subject"></div>
+                    <div class="form-group"><label>Marks (0-100):</label><input type="number" id="marks-value" min="0" max="100"></div>
+                    <div class="form-group"><label>Wish:</label><textarea id="marks-wish" rows="2" placeholder="Wish for student..."></textarea></div>
+                    <button class="btn-green" onclick="saveMark()">💾 Save Mark</button>
+                </div>
+                <div class="card"><h3>Recent Marks</h3><div id="recent-marks"></div></div>
+            `;
+            loadRecentMarks();
+        }
+        
+        function saveMark() {
+            const studentId = parseInt(document.getElementById('marks-student').value);
+            const subject = document.getElementById('marks-subject').value;
+            const markValue = parseInt(document.getElementById('marks-value').value);
+            const wish = document.getElementById('marks-wish').value;
+            
+            if (!studentId || !subject || !markValue) { alert('Fill all fields'); return; }
+            
+            marks.push({ id: Date.now(), studentId, subject, marks: markValue, wish, date: new Date().toISOString() });
+            saveMarks();
+            alert('✓ Mark saved!');
+            document.getElementById('marks-subject').value = '';
+            document.getElementById('marks-value').value = '';
+            document.getElementById('marks-wish').value = '';
+            loadRecentMarks();
+        }
+        
+        function loadRecentMarks() {
+            const container = document.getElementById('recent-marks');
+            if (!container) return;
+            const recent = [...marks].reverse().slice(0, 10);
+            container.innerHTML = recent.map(m => {
+                const s = students.find(st => st.id === m.studentId);
+                return `<div class="student-item"><div><strong>${s?.name}</strong> - ${m.subject}: ${m.marks}</div><div>${m.wish || ''}</div></div>`;
+            }).join('');
+        }
+        
+        // ============ PASH BOARD ============
+        function renderPash(container) {
+            let filteredStudents = students;
+            if (currentUser.role === 'parent' && currentUser.childId) {
+                filteredStudents = students.filter(s => s.id === currentUser.childId);
+            } else if (currentUser.role === 'student' && currentUser.studentId) {
+                filteredStudents = students.filter(s => s.id === currentUser.studentId);
+            }
+            
+            const studentStats = filteredStudents.map(student => {
+                const studentMarks = marks.filter(m => m.studentId === student.id);
+                const studentAttendance = attendance.filter(a => a.studentId === student.id);
+                const avgMark = studentMarks.length > 0 ? studentMarks.reduce((sum, m) => sum + m.marks, 0) / studentMarks.length : 0;
+                const attendancePercent = studentAttendance.length > 0 ? (studentAttendance.filter(a => a.status === 'present').length / studentAttendance.length) * 100 : 0;
+                const wishCount = studentMarks.filter(m => m.wish && m.wish.length > 0).length;
+                return { ...student, avgMark: avgMark.toFixed(2), attendancePercent: attendancePercent.toFixed(2), wishCount };
+            });
+            
+            const classAvg = studentStats.reduce((s, st) => s + parseFloat(st.avgMark), 0) / studentStats.length || 0;
+            const totalAttendance = studentStats.reduce((s, st) => s + parseFloat(st.attendancePercent), 0) / studentStats.length || 0;
+            
+            container.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>Average Marks</h3><div class="number">${classAvg.toFixed(2)}</div></div>
+                    <div class="stat-card"><h3>Avg Attendance</h3><div class="number">${totalAttendance.toFixed(1)}%</div></div>
+                    <div class="stat-card"><h3>Total Students</h3><div class="number">${filteredStudents.length}</div></div>
+                </div>
+                <div class="card"><h3>🏆 Performance Table</h3><table><thead><tr><th>Student</th><th>Class</th><th>Avg Mark</th><th>Attendance</th><th>Wishes</th><th>Status</th></tr></thead><tbody>
+                    ${studentStats.map(s => `<tr><td><strong>${s.name}</strong></td><td>${s.class}-${s.section}</td><td>${s.avgMark}</td><td>${s.attendancePercent}%</td><td>${s.wishCount}</td><td>${parseFloat(s.avgMark) >= 75 ? '🎉 Excellent' : parseFloat(s.avgMark) >= 50 ? '📈 Good' : '📚 Need Improvement'}</td>`).join('')}
+                </tbody></table></div>
+            `;
+        }
+        
+        // ============ EXTRA CURRICULUM ============
+        function renderExtra(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>🎯 Extra Curriculum</h2>
+                    <div class="form-group"><label>Student:</label><select id="extra-student">${students.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Activity:</label><input type="text" id="extra-activity" placeholder="Activity name"></div>
+                    <div class="form-group"><label>Points:</label><input type="number" id="extra-points" placeholder="Points"></div>
+                    <button class="btn-orange" onclick="saveActivity()">➕ Add Activity</button>
+                </div>
+                <div class="card"><h3>Activities Log</h3><div id="activities-list"></div></div>
+            `;
+            loadActivities();
+        }
+        
+        function saveActivity() {
+            const studentId = parseInt(document.getElementById('extra-student').value);
+            const activity = document.getElementById('extra-activity').value;
+            const points = parseInt(document.getElementById('extra-points').value) || 0;
+            if (!studentId || !activity) { alert('Fill all fields'); return; }
+            activities.push({ id: Date.now(), studentId, activity, points, date: new Date().toISOString() });
+            saveActivities();
+            alert('✓ Activity saved!');
+            loadActivities();
+        }
+        
+        function loadActivities() {
+            const container = document.getElementById('activities-list');
+            if (!container) return;
+            let filtered = activities;
+            if (currentUser.role === 'parent' && currentUser.childId) filtered = activities.filter(a => a.studentId === currentUser.childId);
+            else if (currentUser.role === 'student' && currentUser.studentId) filtered = activities.filter(a => a.studentId === currentUser.studentId);
+            
+            container.innerHTML = filtered.map(a => {
+                const s = students.find(st => st.id === a.studentId);
+                return `<div class="student-item"><div><strong>${s?.name}</strong> - ${a.activity}</div><div>${a.points} points</div></div>`;
+            }).join('');
+        }
+        
+        // ============ STUDENTS ============
+        function renderStudents(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>👥 Manage Students</h2>
+                    <div class="form-group"><label>Name:</label><input type="text" id="student-name"></div>
+                    <div class="form-group"><label>Class:</label><input type="text" id="student-class"></div>
+                    <div class="form-group"><label>Section:</label><input type="text" id="student-section"></div>
+                    <div class="form-group"><label>Parent Email:</label><input type="email" id="student-email"></div>
+                    <div class="form-group"><label>Parent Phone:</label><input type="tel" id="student-phone"></div>
+                    <button class="btn-purple" onclick="addStudent()">➕ Add Student</button>
+                </div>
+                <div class="card"><div id="students-list"></div></div>
+            `;
+            renderStudentsList();
+        }
+        
+        function addStudent() {
+            const name = document.getElementById('student-name').value;
+            const className = document.getElementById('student-class').value;
+            const section = document.getElementById('student-section').value;
+            const parentEmail = document.getElementById('student-email').value;
+            const parentPhone = document.getElementById('student-phone').value;
+            if (!name || !className) { alert('Enter name and class'); return; }
+            const newId = students.length + 1;
+            students.push({ id: newId, name, class: className, section: section || '', parentEmail, parentPhone });
+            saveStudents();
+            renderStudentsList();
+            alert('✓ Student added!');
+        }
+        
+        function renderStudentsList() {
+            const container = document.getElementById('students-list');
+            if (!container) return;
+            container.innerHTML = students.map(s => `
+                <div class="student-item"><div><div class="student-name">${s.name}</div><div>Class ${s.class}-${s.section}</div><small>📧 ${s.parentEmail || 'N/A'} | 📱 ${s.parentPhone || 'N/A'}</small></div>
+                <button class="btn-red" onclick="deleteStudent(${s.id})">🗑 Delete</button></div>
+            `).join('');
+        }
+        
+        function deleteStudent(id) {
+            if (confirm('Delete student?')) {
+                students = students.filter(s => s.id !== id);
+                attendance = attendance.filter(a => a.studentId !== id);
+                marks = marks.filter(m => m.studentId !== id);
+                activities = activities.filter(a => a.studentId !== id);
+                fees = fees.filter(f => f.studentId !== id);
+                saveStudents(); saveAttendance(); saveMarks(); saveActivities(); saveFees();
+                renderStudentsList();
+            }
+        }
+        
+        // ============ FEES ============
+        function renderFees(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>💰 Fee Management</h2>
+                    <div class="form-group"><label>Student:</label><select id="fee-student">${students.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Total Amount:</label><input type="number" id="fee-amount" placeholder="Total fee amount"></div>
+                    <div class="form-group"><label>Amount Paid:</label><input type="number" id="fee-paid" placeholder="Amount paid"></div>
+                    <div class="form-group"><label>Due Date:</label><input type="date" id="fee-due"></div>
+                    <button class="btn-blue" onclick="addFee()">💰 Add/Update Fee</button>
+                </div>
+                <div class="card"><h3>Fee Records</h3><div id="fees-list"></div></div>
+            `;
+            renderFeesList();
+        }
+        
+        function addFee() {
+            const studentId = parseInt(document.getElementById('fee-student').value);
+            const total_amount = parseInt(document.getElementById('fee-amount').value);
+            const paid_amount = parseInt(document.getElementById('fee-paid').value) || 0;
+            const due_date = document.getElementById('fee-due').value;
+            const pending = total_amount - paid_amount;
+            const status = pending === 0 ? 'paid' : (paid_amount > 0 ? 'partial' : 'pending');
+            const existing = fees.find(f => f.studentId === studentId);
+            if (existing) {
+                existing.total_amount = total_amount; existing.paid_amount = paid_amount; existing.due_date = due_date; existing.status = status;
+            } else {
+                fees.push({ id: fees.length + 1, studentId, total_amount, paid_amount, due_date, status });
+            }
+            saveFees();
+            renderFeesList();
+            alert('✓ Fee record saved!');
+        }
+        
+        function renderFeesList() {
+            const container = document.getElementById('fees-list');
+            if (!container) return;
+            container.innerHTML = fees.map(f => {
+                const s = students.find(st => st.id === f.studentId);
+                return `<div class="student-item"><div><strong>${s?.name}</strong><br>Total: ₹${f.total_amount} | Paid: ₹${f.paid_amount} | Pending: ₹${f.total_amount - f.paid_amount}<br>Due: ${f.due_date}</div>
+                <div class="status-${f.status}">${f.status.toUpperCase()}</div></div>`;
+            }).join('');
+        }
+        
+        function renderFeesView(container) {
+            let studentId = currentUser.studentId;
+            if (currentUser.role === 'parent' && currentUser.childId) studentId = currentUser.childId;
+            const fee = fees.find(f => f.studentId === studentId);
+            container.innerHTML = `<div class="card"><h2>💰 My Fee Status</h2>${fee ? `
+                <p><strong>Total Amount:</strong> ₹${fee.total_amount}</p>
+                <p><strong>Paid:</strong> ₹${fee.paid_amount}</p>
+                <p><strong>Pending:</strong> ₹${fee.total_amount - fee.paid_amount}</p>
+                <p><strong>Due Date:</strong> ${fee.due_date}</p>
+                <p><strong>Status:</strong> <span class="status-${fee.status}">${fee.status.toUpperCase()}</span></p>
+            ` : '<p>No fee records found.</p>'}</div>`;
+        }
+        
+        // ============ EXAMS ============
+        function renderExams(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>📅 Exam Schedule</h2>
+                    <div class="form-group"><label>Exam Name:</label><input type="text" id="exam-name"></div>
+                    <div class="form-group"><label>Subject:</label><input type="text" id="exam-subject"></div>
+                    <div class="form-group"><label>Date:</label><input type="date" id="exam-date"></div>
+                    <div class="form-group"><label>Time:</label><input type="text" id="exam-time" placeholder="9:00 AM"></div>
+                    <div class="form-group"><label>Class:</label><input type="text" id="exam-class" placeholder="e.g., 10"></div>
+                    <button class="btn-blue" onclick="addExam()">➕ Add Exam</button>
+                </div>
+                <div class="card"><h3>Upcoming Exams</h3><div id="exams-list"></div></div>
+            `;
+            renderExamsList();
+        }
+        
+        function addExam() {
+            const name = document.getElementById('exam-name').value;
+            const subject = document.getElementById('exam-subject').value;
+            const date = document.getElementById('exam-date').value;
+            const time = document.getElementById('exam-time').value;
+            const examClass = document.getElementById('exam-class').value;
+            if (!name || !subject || !date) { alert('Fill required fields'); return; }
+            exams.push({ id: exams.length + 1, name, subject, date, time, class: examClass });
+            saveExams();
+            renderExamsList();
+            alert('✓ Exam added!');
+        }
+        
+        function renderExamsList() {
+            const container = document.getElementById('exams-list');
+            if (!container) return;
+            container.innerHTML = exams.map(e => `<div class="student-item"><div><strong>${e.name}</strong><br>${e.subject} | ${e.date} | ${e.time}<br>Class: ${e.class}</div></div>`).join('');
+        }
+        
+        function renderExamView(container) {
+            let filtered = exams;
+            if (currentUser.studentId) {
+                const student = students.find(s => s.id === currentUser.studentId);
+                if (student) filtered = exams.filter(e => e.class === student.class);
+            }
+            container.innerHTML = `<div class="card"><h2>📅 My Exam Schedule</h2>${filtered.map(e => `<div class="student-item"><div><strong>${e.name}</strong><br>${e.subject} | ${e.date} | ${e.time}</div></div>`).join('')}</div>`;
+        }
+        
+        // ============ NOTIFICATIONS ============
+        function openNotificationModal() {
+            document.getElementById('notification-modal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('notification-modal').style.display = 'none';
+        }
+        
+        function sendNotification() {
+            const targetRole = document.getElementById('notify-role').value;
+            const subject = document.getElementById('notify-subject').value;
+            const message = document.getElementById('notify-message').value;
+            if (!subject || !message) { alert('Fill subject and message'); return; }
+            let recipients = [];
+            if (targetRole === 'all') recipients = users;
+            else if (targetRole === 'parents') recipients = users.filter(u => u.role === 'parent');
+            else if (targetRole === 'teachers') recipients = users.filter(u => u.role === 'teacher');
+            else if (targetRole === 'students') recipients = users.filter(u => u.role === 'student');
+            
+            recipients.forEach(r => {
+                notifications.push({ id: Date.now(), userId: r.id, subject, message, date: new Date().toISOString(), read: false });
+            });
+            saveNotifications();
+            alert(`✓ Notification sent to ${recipients.length} users!`);
+            closeModal();
+        }
+        
+        function renderNotificationsView(container) {
+            let userNotifications = notifications.filter(n => n.userId === currentUser.id);
+            container.innerHTML = `<div class="card"><h2>📧 My Notifications</h2>${userNotifications.map(n => `<div class="student-item"><div><strong>${n.subject}</strong><br>${n.message}<br><small>${new Date(n.date).toLocaleString()}</small></div></div>`).join('')}</div>`;
+        }
+        
+        // ============ USER MANAGEMENT ============
+        function renderUsers(container) {
+            container.innerHTML = `
+                <div class="card">
+                    <h2>👥 Manage Users</h2>
+                    <div id="users-list-admin"></div>
+                </div>
+            `;
+            const usersContainer = document.getElementById('users-list-admin');
+            if (usersContainer) {
+                usersContainer.innerHTML = `<table><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Email</th><th>Phone</th><th>Action</th></tr></thead><tbody>
+                    ${users.filter(u => u.username !== 'admin').map(u => `<tr><td>${u.name}</td><td>${u.username}</td><td>${u.role}</td><td>${u.email || '-'}</td><td>${u.phone || '-'}</td><td><button class="btn-red" onclick="deleteUser(${u.id})">Delete</button></td>`).join('')}
+                </tbody></table>`;
+            }
+        }
+        
+        function deleteUser(id) {
+            if (confirm('Delete user?')) {
+                users = users.filter(u => u.id !== id);
+                saveUsers();
+                renderUsers(document.getElementById('dynamic-pages'));
+                alert('User deleted');
+            }
+        }
+        
+        // ============ EXPORT ============
+        function exportToExcel() {
+            let csv = "Student Name,Class,Average Marks,Attendance %,Fees Paid,Fees Pending\n";
+            students.forEach(s => {
+                const studentMarks = marks.filter(m => m.studentId === s.id);
+                const avgMark = studentMarks.length > 0 ? studentMarks.reduce((sum, m) => sum + m.marks, 0) / studentMarks.length : 0;
+                const studentAttendance = attendance.filter(a => a.studentId === s.id);
+                const attPercent = studentAttendance.length > 0 ? (studentAttendance.filter(a => a.status === 'present').length / studentAttendance.length) * 100 : 0;
+                const fee = fees.find(f => f.studentId === s.id);
+                csv += `"${s.name}","${s.class}","${avgMark.toFixed(2)}","${attPercent.toFixed(1)}%","${fee?.paid_amount || 0}","${fee ? (fee.total_amount - fee.paid_amount) : 0}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `khkixi_report_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            alert('✓ Report exported!');
+        }
+        
+        // Initialize
+        loadData();
+        const savedUser = localStorage.getItem('khkixi_current_user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            showMainApp();
+        }
+    </script>
+</body>
+</html>

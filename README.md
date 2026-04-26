@@ -1,1 +1,0 @@
-# khkixi-edu-pro
